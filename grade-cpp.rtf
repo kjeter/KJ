@@ -1,0 +1,162 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 #include <iostream>\
+#include <string>\
+#include <math.h>\
+using namespace std;\
+\
+// Added a const to use partially filled array\
+const int MAX_NUM_EXAMS=15;\
+\
+float convert2number(string grade);\
+// Converts letter grade to numeric grade\
+\
+string convert2letter(float grade);\
+// Converts numeric grade to letter grade\
+\
+void getGrades(string grades[], int& size);\
+// returns an array letter grades, generalize to array\
+\
+float calcTotal(float gradeNum[], int size);\
+// Calculates total, generalize to array.\
+\
+float min(float gradeNum[], int size);\
+// returns the minimum value, generalize to array.\
+\
+int main()\
+\{\
+   // Change this to arrays\
+   // declare variables for letter and number grades\
+   // string grade1, grade2, grade3;\
+   string grade[MAX_NUM_EXAMS], finalGrade;\
+\
+   // float grNum1, grNum2, grNum3;\
+   float grNum[MAX_NUM_EXAMS], total=0, average;\
+   int numExams=0;\
+\
+   // read the letter grades\
+   // getGrades(grade1, grade2, grade3);\
+   getGrades(grade, numExams);\
+\
+   // call convert2number for all letter grades\
+   for (int i = 0; i < numExams; i++)\
+       grNum[i] = convert2number(grade[i]);\
+\
+   // call minGrade\
+   total = calcTotal(grNum, numExams) - min(grNum, numExams);\
+\
+   // take average\
+   average = total/(numExams-1);\
+\
+   // convert average to letter grade\
+   cout.precision(3);\
+   cout << "Final average is " << average << endl;\
+   cout << "Final grade is " << convert2letter(average) << endl;\
+\
+   return 0;\
+\}\
+\
+\
+// returns array of letter grades, generalize to array\
+void getGrades(string grades[], int& size)\
+\{\
+   size = 0;\
+   cout << "Enter up to " << MAX_NUM_EXAMS << " student exam grades or Q to quit: " << endl;\
+   string input;\
+   do \{\
+      cin >> input;\
+      if (input != "Q") \{\
+         grades[size] = input;\
+         size++;\
+      \}\
+   \} while (input != "Q" && size < MAX_NUM_EXAMS);\
+\}\
+\
+// Calculates total, generalize to array.\
+float calcTotal(float gradeNum[], int size)\
+\{\
+   // return gr1 + gr2 + gr3;\
+   float total = 0;\
+   for (int i = 0; i < size; i++)\
+       total = total + gradeNum[i];\
+   return total;\
+\}\
+\
+\
+// returns the minimum value, generalize to array.\
+float min(float gradeNum[], int size)\
+\{\
+   float min = gradeNum[0];\
+   for (int i = 0; i < size; i++)\
+     if (gradeNum[i] < min) \{\
+         min = gradeNum[i];\
+     \}\
+   return min;\
+\}\
+\
+// Converts letter grade to numeric grade\
+float convert2number(string grade)\
+\{\
+   float gradeNum = 0.0;\
+   switch(grade[0]) \{\
+      case 'A':\
+        gradeNum = 4.0;\
+        break;\
+      case 'B':\
+        gradeNum = 3.0;\
+        break;\
+      case 'C':\
+        gradeNum = 2.0;\
+        break;\
+      case 'D':\
+        gradeNum = 1.0;\
+        break;\
+      case 'F':\
+        gradeNum = 0.0;\
+        break;\
+   \}\
+   if (grade.length() > 1) \{\
+      if (grade[1] == '+')\
+         gradeNum += .30;\
+      else\
+         gradeNum -= .30;\
+   \}\
+   return gradeNum;\
+\}\
+\
+// Converts numeric grade to letter grade\
+string convert2letter(float gradeNum)\
+\{\
+   string grade;\
+   switch((int)round(gradeNum))\
+   \{\
+      case 4:\
+        grade = "A";\
+        break;\
+      case 3:\
+        grade = "B";\
+        break;\
+      case 2:\
+        grade = "C";\
+        break;\
+      case 1:\
+        grade = "D";\
+        break;\
+      case 0:\
+        grade = "F";\
+        break;\
+   \}\
+   // if the fractional part is >= .85 && <= .15 has no +/-\
+   float extra = gradeNum - round(gradeNum);\
+   if (extra > .15)\
+      grade += '+';\
+   else if (extra < -.15)\
+      grade += '-';\
+   return grade;\
+\}\
+}
